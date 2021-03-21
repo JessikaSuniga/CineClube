@@ -1,53 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
-  <link th:href="@{/css/app.css}" rel="stylesheet" />
-<title>CineClube</title>
-</head>
+
+<head th:replace="head :: head"></head>
+
 <body>
-	<!-- 
+  <!-- 
     BARRA DE NAVEGACAO 
   -->
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-	  <div class="container-fluid">
-	    <a class="navbar-brand" href="#">CineClube</a>
-	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-	      aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-	      <span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse navbar-collapse" id="navbarCollapse">
-	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
-	        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/filmes/list">Filmes</a></li>
-	        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/pessoas/list">Pessoas</a></li>
-	      </ul>
-	      <form class="d-flex">
-	        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-	        <button class="btn btn-outline-success" type="submit">Search</button>
-	      </form>
-	    </div>
-	  </div>
-	</nav>
+  
+  <div th:replace="menu :: menu"></div>
+  
   <!-- 
     CONTEUDO DA PAGINA 
   -->
   <main class="container">
     <div class="bg-light p-5 rounded">
-      <h1>Cadastro de Pessoas</h1>
-      <p class="lead">Cadastro de elenco: ator, diretor, ...</p>
+      <h1>Gerenciar Pessoas</h1>
+      
+      <div th:switch="${pessoa.pessoaId>0}">
+      	<p th:case="${true}">Atualizacao</p>
+      	<p th:case="*">Cadastro de Pessoa</p>
+      </div>
 
       <form th:object="${pessoa}" action="/pessoas/save" method="POST">
+      
+      <input type="hidden" th:field="${pessoa.pessoaId}" th:if="${pessoa.pessoaId}">
 
         <div class="mb-3">
           <label class="form-label" for="nome">Nome</label> 
-          <input type="text" pattern=".{3,}" required title="Minimo de 3 caracteres" th:field="${pessoa.nome}" class="form-control" id="nome" placeholder="Nome" 
+          <input type="text" th:field="${pessoa.nome}" class="form-control" id="nome" placeholder="Nome" 
           autocomplete="off">
-        </div>
+          <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">
+          Campo invalido
+          </span>
+         
+         
+          <label class="form-label" for="dataNasc">Data de Nascimento</label> 
+          <input type="text" th:field="${pessoa.dataNasc}" class="form-control" id="dataNasc" placeholder="dd/MM/yyyy" 
+          autocomplete="off">
+          <span class="error" th:if="${#fields.hasErrors('dataNasc')}" 
+		  th:errors="*{dataNasc}">Campo invalido</span>
+         </div>
+        
         <div class="mb-3">
-          <button type="submit" class="btn btn-primary">Adicionar</button>
+          <p th:switch="${pessoa.pessoaId>0}">
+            <button type="submit" th:case="${true}" class="btn btn-danger" th:text="Atualizar"></button>
+            <button type="submit" th:case="*" class="btn btn-primary" th:text="Adicionar"></button>
+          </p>
         </div>
       </form>
     </div>

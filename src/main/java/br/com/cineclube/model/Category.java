@@ -1,19 +1,19 @@
 package br.com.cineclube.model;
 
-public  enum  Category {
+public enum Category {
 	
-	AÇÃO ,
-	AVENTURA ,
-	ANIMAÇÃO ,
-	BIOGRAFIA ,
-	COMÉDIA ,
-	CRIME ,
-	DRAMA ,
-	DOCUMENTÁRIO ,
-	FANTASY ,
-	MISTÉRIO ,
-	HORROR ,
-	ROMANCE ,
+	ACTION,
+	ADVENTURE,
+	ANIMATION, 
+	BIOGRAPHY,
+	COMEDY, 
+	CRIME,
+	DRAMA, 
+	DOCUMENTARY,
+	FANTASY,
+	MISTERY, 
+	HORROR, 
+	ROMANCE, 
 	SCIFI
 
 }
