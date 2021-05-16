@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="head :: head"></head>
+
+<body>
+  <!-- 
+    BARRA DE NAVEGACAO 
+  -->
+  <div th:replace="menu :: menu"></div>
+  
+  <!-- 
+    CONTEUDO DA PAGINA 
+  -->
+  <main class="container mx-5">
+    <a class="btn-c btn btn-secondary active my-3" role="button" th:href="@{/categorias/new}">
+    	<i class="bi bi-plus-square"></i>
+    Categoria
+    </a>
+    
+    
+    <div class="row px-4">
+	      	<h2>Categorias</h2>
+		      <table class="mt-4 mb-5 table table-striped table-bordered table-hover center">
+			      <thead>
+			        <tr>
+			          <th>ID</th>
+			          <th>Categoria</th>
+			          <th>Remover</th>
+			        </tr>
+			      </thead>
+			      
+			      <tbody>
+			        <tr th:each="categoria: ${categoriaList}"> 
+			          <td th:text="${categoria.id}"/>
+			          <td><a th:href="@{/categorias/edit/{id}(id=${categoria.id})}" th:text="${categoria.nome}"></a></td>
+			          <td><a th:href="@{/categorias/delete/{id}(id=${categoria.id})}">
+			            <i class="bi bi-dash-circle" title="delete"></i>
+			          </a></td>
+			        </tr>
+			      </tbody>
+		      </table>
+	      </div>
+	      
+  </main>
+  <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

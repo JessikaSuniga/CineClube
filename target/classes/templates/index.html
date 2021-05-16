@@ -6,11 +6,36 @@
   <!-- 
     CONTEUDO DA PAGINA 
   -->
-  <main class="container">
-    <div class="bg-light p-5 rounded">
+  <main>
+    <div class="bg-light p-5 rounded ">
       <h2>Sistema CineClube</h2>
     </div>
   </main>
+  <div class="container">
+  <div class="row">
+  	<div class="col-md-6 center">
+  		<h2 class="mt-4">Gerenciar Filmes</h2>
+	 	<a class="btn-b btn btn-secondary btn-lg px-5 mt-3" aria-current="page" th:href="@{/filmes/list}">Lista de Filmes</a><br>
+	 	<a class="btn-b btn btn-secondary btn-lg px-5 mt-2" aria-current="page" th:href="@{/filmes/new}">Inserir Filmes</a><br>
+	 	<h2 class="mt-4">Gerenciar Categoria</h2>
+	 	<a class="btn-b btn btn-secondary btn-lg px-5 mt-2" aria-current="page" th:href="@{/categorias/list}">Lista de Categoria</a><br>
+	 	<a class="btn-b btn btn-secondary btn-lg px-5 mt-2" aria-current="page" th:href="@{/categorias/new}">Inserir Categoria</a>
+	</div>
+
+  	<div class="col-md-6 center">
+  	<h2 class="mt-4">Gerenciar Pessoas</h2>
+	 	 <a class="btn-b btn btn-secondary btn-lg px-5 mt-3" aria-current="page" th:href="@{/pessoas/list}">Lista de Pessoas</a><br>
+        <a class="btn-b btn btn-secondary btn-lg px-5 mt-2 mb-5" aria-current="page" th:href="@{/pessoas/new}">Inserir Pessoas</a>
+	</div>
+	</div>
+  </div>
+  
+  
+  
+       
+  
+  
+
   <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

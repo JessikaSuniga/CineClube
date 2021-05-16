@@ -15,45 +15,51 @@
   -->
   <main class="container">
     <div class="bg-light p-5 rounded">
-      <h1>Filmes + Series</h1>      
+      <h1>Filmes + Séries</h1>      
       
-      <div th:switch="${filme.filmeId>0}">
-      	<p th:case="${true}">Atualizacao</p>
+      <div th:switch="${filme.id>0}">
+      	<p th:case="${true}">Atualização</p>
       	<p th:case="*">Cadastro de filme</p>
       </div>
 
       <form th:object="${filme}" action="/filmes/save" method="POST">
       
-		<input type="hidden" th:field="${filme.filmeId}" th:if="${filme.filmeId}">
+		<input type="hidden" th:field="${filme.id}" th:if="${filme.id}">
+		
+		<h4>Elenco:</h4>       
+		<p th:each="ator: ${filme.pessoas}" style="margin-bottom: 5px;">
+		  <label>
+		  <input type="checkbox" name="pessoas" th:value="${ator.id}" checked="checked" 
+		  	th:text="${ator.nome}" style="margin-right: 10px;">
+		  </label>
+		</p>
 		
         <div class="mb-3">
           <label class="form-label" for="nome">Nome</label> 
-          <input type="text" th:field="${filme.nome}" class="form-control" id="nome" placeholder="nome do filme" 
-          autocomplete="off" required="required">
-          <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">
-          Campo invalido
-          </span>
+          
+         <input type="text" th:field="*{nome}" class="form-control" placeholder="Nome do filme" th:errorclass="inputError" autocomplete="off">
+         <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">campo invalido</span>
+
         </div>
-        
         <div class="row">
+          
           <div class="col">
-            <label class="form-label" for="lancamento">Data Lancamento</label> 
-            <input type="text" th:field="${filme.lancamento}" class="form-control" 
-		  placeholder="dd/MM/yyyy">
+          <label class="form-label" for="nome">Data lançamento</label> 
+		  <input type="text" th:field="${filme.lancamento}" class="form-control" placeholder="dd/MM/yyyy" autocomplete="off">
 		  <span class="error" th:if="${#fields.hasErrors('lancamento')}" 
-		  th:errors="*{lancamento}">Campo invalido</span>
+		  th:errors="*{lancamento}">campo invalido</span>
           </div>
           
            <div class="col">
             <label class="form-label" for="categoria">Categoria</label> 
-            <select th:field="${filme.categoria}" class="form-select" id="categoria" required="required">
-              <option value="">Selecione a Categoria</option>
+            <select th:field="${filme.categoria}" class="form-select" id="categoria">
+              <option value="">Select category</option>
               <option th:each="cat: ${categories}" th:text="${cat.name()}" th:value="${cat.name()}" ></option>
             </select>
           </div>
         </div>
         <div class="mb-3">
-          <p th:switch="${filme.filmeId>0}">
+          <p th:switch="${filme.id>0}">
             <button type="submit" th:case="${true}" class="btn btn-danger" th:text="Atualizar"></button>
             <button type="submit" th:case="*" class="btn btn-primary" th:text="Adicionar"></button>
           </p>
