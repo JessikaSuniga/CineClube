@@ -13,8 +13,8 @@
     CONTEUDO DA PAGINA 
   -->
 	<main class="container">
-		<a class="btn-c btn btn-secondary active my-3" role="button"
-			th:href="@{/pessoas/new}"> <i class="bi bi-plus-square"></i>
+		<a class="btn-c btn btn-secondary active my-3" role="button" th:href="@{/pessoas/new}"> <i
+				class="bi bi-plus-square"></i>
 			Pessoa
 		</a>
 
@@ -22,8 +22,7 @@
 			<div class="row">
 
 				<h2>Pessoas</h2>
-				<table
-					class="mt-4 mb-5 table table-striped table-bordered table-hover center">
+				<table class="mt-4 mb-5 table table-striped table-bordered table-hover center">
 					<thead>
 						<tr>
 							<th>ID</th>
@@ -38,12 +37,12 @@
 							<td th:text="${p.id}" />
 							<td th:text="${p.nome}" />
 							<td th:text="${p.dataNasc}" />
-							<td><a th:href="@{/pessoas/edit/{id}(id=${p.id})}"> <i
-									class="bi bi-pencil-square" title="editar"></i>
-							</a></td>
-							<td><a th:href="@{/pessoas/delete/{id}(id=${p.id})}"> <i
-									class="bi bi-dash-circle" title="delete"></i>
-							</a></td>
+							<td><a th:href="@{/pessoas/edit/{id}(id=${p.id})}"> <i class="bi bi-pencil-square"
+										title="editar"></i>
+								</a></td>
+							<td><a th:href="@{/pessoas/delete/{id}(id=${p.id})}"> <i class="bi bi-dash-circle"
+										title="delete"></i>
+								</a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -54,4 +53,5 @@
 	</main>
 	<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
+
 </html>

@@ -18,7 +18,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	List<Pessoa> findByNomeIgnoreCaseContaining(String query);
 	
 	@Transactional
-	@Modifying
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("delete from Pessoa p where p.id = ?1")
 	void removerPessoa(Long id);
 	

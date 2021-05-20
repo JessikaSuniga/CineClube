@@ -30,7 +30,7 @@ public class DataLoaderHelper {
 		filmeList.add(new Filme("Lupin", 						9f, 	LocalDate.of(2021, 1, 8)));
 		filmeList.add(new Filme("The Sinner", 					8f, 	LocalDate.of(2017, 1, 1)));
 		filmeList.add(new Filme("Chernobyl", 					8.4f, 	LocalDate.of(2012, 7, 13)));//7
-		filmeList.add(new Filme("Por trás de seus olhos",		8.2f, 	LocalDate.of(2021, 2, 17)));
+		filmeList.add(new Filme("Por tras de seus olhos",		8.2f, 	LocalDate.of(2021, 2, 17)));
 		filmeList.add(new Filme("Vozes e vultos", 				7.6f, 	LocalDate.of(2021, 4, 21)));
 		filmeList.add(new Filme("O Inocente", 					9f, 	LocalDate.of(2020, 4, 21)));
 		filmeList.add(new Filme("Stranger Things", 				6.5f, 	LocalDate.of(2016, 7, 15)));
@@ -38,7 +38,7 @@ public class DataLoaderHelper {
 		filmeList.add(new Filme("Unidade 42", 					9.40f, 	LocalDate.of(2017, 10, 21)));
 		filmeList.add(new Filme("Um contratempo",				8.11f, 	LocalDate.of(2017, 1, 6)));
 		filmeList.add(new Filme("Terror na estrada", 			10f, 	LocalDate.of(2015, 10, 6)));
-		filmeList.add(new Filme("Presságio", 					9.3f, 	LocalDate.of(2009, 3, 20)));
+		filmeList.add(new Filme("Pressagio", 					9.3f, 	LocalDate.of(2009, 3, 20)));
 		filmeList.add(new Filme("Labirinto verde", 				6.5f, 	LocalDate.of(2017, 4, 10)));
 		filmeList.add(new Filme("Deadwind", 					10f, 	LocalDate.of(2018, 1, 15)));
 		daof.saveAll(filmeList);

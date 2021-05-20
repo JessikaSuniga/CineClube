@@ -1,7 +1,11 @@
 package br.com.cineclube.dao;
 
 import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import br.com.cineclube.model.Filme;
 
@@ -19,11 +23,16 @@ public interface FilmeRepository extends JpaRepository<Filme, Long>{
 	List<Filme> findTop3ByNotaGreaterThanEqualOrderByNotaDesc(Float nota);
 	List<Filme> findByNotaBetween(Float min, Float max);
 	boolean existsFilmeByCategoria(String categoria);
+
 	
-	@Query("select f from Filme f where categoria = ?1")
-	List<Filme> selecionatFilmePorCategoria(String categoria);
+	@Query("select f from Filme f join f.categoria c where c.id = ?1")
+	List<Filme> selecionatFilmePorCategoria(Long categoriaId);
 	
-	@Query("select f from Filme f join f.pessoas p where p.nome = ?1 and f.categoria = ?2")
-	List<Filme> buscaPorPessoaAndCategoria(String nome, String categoria);
+	@Query("select f from Filme f join f.pessoas p join f.categoria c where p.nome = ?1 and c.id = ?2")
+	List<Filme> buscaPorPessoaAndCategoria(String nome, Long categoria);
 	
+	@Transactional
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Query("delete from Filme f where f.id = :id")
+	void removerFilme(Long id);
 }

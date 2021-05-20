@@ -18,6 +18,6 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
 
 	@Transactional
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("delete from Categoria c where c.id = :id")
+	@Query("delete from Categoria c where c.id = ?1")
 	void removerCategoria(Long id);
 }

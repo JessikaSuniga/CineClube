@@ -1,21 +1,26 @@
 package br.com.cineclube.model;
 
+
 import java.time.LocalDate;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
 @Entity
@@ -25,6 +30,9 @@ public class Filme {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Transient
+	private FilmeDB moviedb; // mapea o json que vem da moviedb api
+	
 	@NotBlank(message="Nome campo obrigatorio")
 	@Size(min=1, max=50, message="Minimo de {min} caracteres e maximo de {max}")
 	@Column(nullable = false)
@@ -38,11 +46,12 @@ public class Filme {
 	private Float nota;
 	
 	@ManyToMany
+	@JsonSerialize(using = PessoaListSerializer.class)
 	@JoinTable(name="filme_pessoa",
 	joinColumns = {@JoinColumn(name="filme_id")},
 	inverseJoinColumns = {@JoinColumn(name="pessoa_id")})
 	private Set<Pessoa> pessoas;
-	
+
 	@ManyToMany
 	@JoinTable(name = "filme_categoria",
 	joinColumns = {@JoinColumn(name="filme_id")},
@@ -106,5 +115,12 @@ public class Filme {
 		this.categoria = categoria;
 	}
 
+	public FilmeDB getMoviedb() {
+		return moviedb;
+	}
+
+	public void setMoviedb(FilmeDB moviedb) {
+		this.moviedb = moviedb;
+	}
 	
 }

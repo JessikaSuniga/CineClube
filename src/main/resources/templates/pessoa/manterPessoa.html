@@ -13,36 +13,56 @@
   -->
   <main class="container">
     <div class="bg-light p-5 rounded">
-      <h3>Gerenciar pessoas</h3>      
-      
+      <h3>Gerenciar pessoas</h3>
+
       <div th:switch="${pessoa.id>0}">
-      	<p th:case="${true}">Atualizacao</p>
-      	<p th:case="*">Cadastro pessoa</p>
+        <p th:case="${true}">Atualizacao</p>
+        <p th:case="*">Cadastro pessoa</p>
       </div>
 
       <form th:object="${pessoa}" action="/pessoas/save" method="POST">
-		<input type="hidden" th:field="${pessoa.id}" th:if="${pessoa.id}">
-		<p th:each="filme: ${pessoa.filmes}" style="margin-bottom: 5px;">
-		  <label><input type="checkbox" name="filmes" th:value="${filme.id}" checked="checked" th:text="${filme.nome}" onclick="return false;" style="margin-right: 10px;">
-		  </label>
-		</p>
-		
+      	
+   		<div th:if="${pessoa.id > 0 && pessoa.persondb == null}">
+			<span style="color: #ff0511">Ator ou atriz nao cadastrada no The Movie DB</span>  
+		</div>
+				
+      	<img th:if="${pessoa.persondb}" alt="foto" style="width: 100px" th:src="${pessoa.persondb.profile_path}">
+
+      	<div class="mb-3">
+	        <input type="hidden" th:field="${pessoa.id}" th:if="${pessoa.id}">
+	        <p th:each="filme: ${pessoa.filmes}" style="margin-bottom: 5px;">
+	          <label><input type="checkbox" name="filmes" th:value="${filme.id}" checked="checked" th:text="${filme.nome}"
+	              onclick="return false;" style="margin-right: 10px;">
+	          </label>
+	        </p>
+		</div>	
+			
         <div class="mb-3">
-          <label class="form-label" for="nome">Nome</label> 
-         <input type="text" th:field="*{nome}" class="form-control" placeholder="Nome" th:errorclass="inputError" autocomplete="off">
-         <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">campo invalido</span>
+          <label class="form-label" for="nome">Nome</label>
+          <input type="text" th:field="*{nome}" class="form-control" placeholder="Nome" th:errorclass="inputError"
+            autocomplete="off">
+          <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">campo invalido</span>
         </div>
-        
-        <div class="row">
+
+        <div class="row mb-3">
           <div class="col">
-	          <label class="form-label" for="nome">Nascimento</label> 
-			  <input type="text" th:field="${pessoa.dataNasc}" class="form-control" placeholder="10/10/2000">
-			  <span class="error" th:if="${#fields.hasErrors('dataNasc')}" th:errors="*{dataNasc}">campo invalido</span>
+            <label class="form-label" for="nome">Nascimento</label>
+            <input type="text" th:field="${pessoa.dataNasc}" class="form-control" placeholder="10/10/2000">
+            <span class="error" th:if="${#fields.hasErrors('dataNasc')}" th:errors="*{dataNasc}">campo invalido</span>
           </div>
         </div>
+        
+         <div class="row mb-3" th:if="${pessoa.persondb}">
+          <div class="col">
+            <label class="form-label" for="nome">Popularidade</label>
+            <input type="text" th:field="${pessoa.persondb.popularity}" style="background: #fff" readonly class="form-control" >
+          </div>
+        </div>
+        
         <div class="mb-3 mt-3">
           <p th:switch="${pessoa.id>0}">
-            <button type="submit" th:case="${true}" class="btn-c btn btn-secondary active my-3" th:text="Atualizar"></button>
+            <button type="submit" th:case="${true}" class="btn-c btn btn-secondary active my-3"
+              th:text="Atualizar"></button>
             <button type="submit" th:case="*" class="btn-c btn btn-secondary active my-3" th:text="Adicionar"></button>
           </p>
         </div>
@@ -51,4 +71,5 @@
   </main>
   <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
+
 </html>

@@ -4,52 +4,54 @@
 <head th:replace="head :: head"></head>
 
 <body>
-  <!-- 
+	<!-- 
     BARRA DE NAVEGACAO 
   -->
-  <div th:replace="menu :: menu"></div>
-  
-  
-  <!-- 
+	<div th:replace="menu :: menu"></div>
+
+	<!-- 
     CONTEUDO DA PAGINA 
   -->
-  <main class="container mx-5">
-    <a class="btn-c btn btn-secondary active my-3" role="button" th:href="@{/pessoas/new}">
-    <i class="bi bi-plus-square"></i>
-    Pessoa
-    </a>
-        
-	  <div class="bg-light p-5 rounded">
-	      <h2>Lista de Pessoas</h2>
-	      <table class="mt-4 mb-5 table table-striped table-bordered table-hover center">
-		      <thead>
-		        <tr>
-		          <th>ID</th>
-		          <th>Nome</th>
-		          <th>Data de Nascimento</th>
-		          <th>Idade</th>
-		          <th>Editar</th>
-		          <th>Remover</th>
-		        </tr>
-		      </thead>
-		      <tbody>
-		        <tr th:each="pessoa: ${pessoaList}">
-		          <td th:text="${pessoa.pessoaId}"/>
-		          <td th:text="${pessoa.nome}"/>
-		          <td th:text="${#temporals.format(pessoa.dataNasc,'dd/MM/yyyy')}"/>
-		          <td th:text="${pessoa.idade}"/>
-		          <td><a th:href="@{/pessoas/edit/{id}(id=${pessoa.pessoaId})}">
-		            <i class="bi bi-pencil-square" title="editar"></i>
-		          </a></td>
-		          <td><a th:href="@{/pessoas/delete/{id}(id=${pessoa.pessoaId})}">
-		            <i class="bi bi-dash-circle" title="delete"></i>
-		          </a></td>
-		        </tr>
-		      </tbody>
-	      </table>
-	  </div>
-  </main>
-  
+	<main class="container">
+		<a class="btn-c btn btn-secondary active my-3" role="button" th:href="@{/pessoas/new}"> <i
+				class="bi bi-plus-square"></i>
+			Pessoa
+		</a>
+
+		<div class="bg-light p-5 rounded">
+			<div class="row">
+
+				<h2>Pessoas</h2>
+				<table class="mt-4 mb-5 table table-striped table-bordered table-hover center">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Nome</th>
+							<th>Data de Nascimento</th>
+							<th>Editar</th>
+							<th>Deletar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="p: ${pessoaList}">
+							<td th:text="${p.id}" />
+							<td th:text="${p.nome}" />
+							<td th:text="${p.dataNasc}" />
+							<td><a th:href="@{/pessoas/edit/{id}(id=${p.id})}"> <i class="bi bi-pencil-square"
+										title="editar"></i>
+								</a></td>
+							<td><a th:href="@{/pessoas/delete/{id}(id=${p.id})}"> <i class="bi bi-dash-circle"
+										title="delete"></i>
+								</a></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+
+		</div>
+	</main>
 	<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
+
 </html>

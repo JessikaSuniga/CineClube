@@ -13,8 +13,8 @@
     CONTEUDO DA PAGINA 
   -->
 	<main class="container">
-		<a class="btn-c btn btn-secondary active my-3" role="button"
-			th:href="@{/categorias/new}"> <i class="bi bi-plus-square"></i>
+		<a class="btn-c btn btn-secondary active my-3" role="button" th:href="@{/categorias/new}"> <i
+				class="bi bi-plus-square"></i>
 			Categoria
 		</a>
 
@@ -36,13 +36,13 @@
 							<td th:text="${categoria.id}" />
 							<td th:text="${categoria.nome}" />
 							<td><a th:href="@{/categorias/edit/{id}(id=${categoria.id})}"> <i
-									class=" bi bi-pencil-square" title="editar"></i>
-							</a></td>
+										class=" bi bi-pencil-square" title="editar"></i>
+								</a></td>
 							<td><a th:href="@{/categorias/delete/{id}(id=${categoria.id})}"> <i
-									class="bi bi-dash-circle" title="delete"></i>
-							</a></td>
-							
-							
+										class="bi bi-dash-circle" title="delete"></i>
+								</a></td>
+
+
 						</tr>
 					</tbody>
 				</table>
@@ -53,4 +53,5 @@
 	</main>
 	<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
+
 </html>

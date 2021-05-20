@@ -13,31 +13,34 @@
   -->
   <main class="container">
     <div class="bg-light p-5 rounded">
-      <h3>Gerenciar categorias</h3>      
-      
+      <h3>Gerenciar categorias</h3>
+
       <div th:switch="${categoria.id>0}">
-      	<p th:case="${true}">Atualizacao</p>
-      	<p th:case="*">Cadastro categoria</p>
+        <p th:case="${true}">Atualizacao</p>
+        <p th:case="*">Cadastro categoria</p>
       </div>
 
       <form th:object="${categoria}" action="/categorias/save" method="POST">
-		<input type="hidden" th:field="${categoria.id}" th:if="${categoria.id}">
-		<p th:each="filme: ${categoria.filmes}" style="margin-bottom: 5px;">
-		  <label>
-		  <input type="checkbox" name="filmes" th:value="${filme.id}" checked="checked" th:text="${filme.nome}" onclick="return false;" style="margin-right: 10px;">
-		  </label>
-		</p>
-		
+        <input type="hidden" th:field="${categoria.id}" th:if="${categoria.id}">
+        <p th:each="filme: ${categoria.filmes}" style="margin-bottom: 5px;">
+          <label>
+            <input type="checkbox" name="filmes" th:value="${filme.id}" checked="checked" th:text="${filme.nome}"
+              onclick="return false;" style="margin-right: 10px;">
+          </label>
+        </p>
+
         <div class="mb-3">
-          <label class="form-label" for="nome">Nome</label> 
-         <input type="text" th:field="*{nome}" class="form-control" placeholder="Nome da Categoria" th:errorclass="inputError" autocomplete="off">
-         <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">campo invalido</span>
+          <label class="form-label" for="nome">Nome</label>
+          <input type="text" th:field="*{nome}" class="form-control" placeholder="Nome da Categoria"
+            th:errorclass="inputError" autocomplete="off">
+          <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">campo invalido</span>
         </div>
-        
-       
+
+
         <div class="mb-3">
           <p th:switch="${categoria.id>0}">
-            <button type="submit" th:case="${true}" class="btn-c btn btn-secondary active my-3" th:text="Atualizar"></button>
+            <button type="submit" th:case="${true}" class="btn-c btn btn-secondary active my-3"
+              th:text="Atualizar"></button>
             <button type="submit" th:case="*" class="btn-c btn btn-secondary active my-3" th:text="Adicionar"></button>
           </p>
         </div>
@@ -46,4 +49,5 @@
   </main>
   <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
+
 </html>
