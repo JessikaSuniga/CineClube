@@ -13,40 +13,26 @@ import br.com.cineclube.model.FilmeDB;
 import br.com.cineclube.model.PersonDB;
 import br.com.cineclube.model.WrapperMovieSearch;
 import br.com.cineclube.model.WrapperPersonSearch;
+import br.com.cineclube.service.PersondbService;
 
 @RestController
 @RequestMapping("/api/v1")
 public class persondbConsumer {
 	
-	@Value("${api.moviedb.key}")
-    private String apiKey;
-
-    @Autowired
-    private RestTemplate apiRequest;
+	@Autowired
+	PersondbService apiService;
     
     @GetMapping("/search-person")
     public WrapperPersonSearch searchPerson(@RequestParam String name){
+
     	
-    	String pessoaUrl = 
-        		"https://api.themoviedb.org/3/search/person?api_key=" +  apiKey + "&query=" + name ;
-    	
-    	WrapperPersonSearch searchResult = apiRequest.getForObject(pessoaUrl, WrapperPersonSearch.class);
-    	
-    	return searchResult;
+    	return apiService.searchPerson(name);
     }
     
     @GetMapping("/search-person1")
     public PersonDB searchOneMovie(@RequestParam String name){
     	
-    	String pessoaUrl = 
-        		"https://api.themoviedb.org/3/search/person?api_key=" +  apiKey + "&query=" + name;
-    	
-    	
-    	WrapperPersonSearch searchResult = apiRequest.getForObject(pessoaUrl, WrapperPersonSearch.class);
-    	
-    	PersonDB pessoa = searchResult.getResults().get(0);
-    	
-    	return pessoa;
+    	return apiService.searchOneMovie(name);
     }
     
     

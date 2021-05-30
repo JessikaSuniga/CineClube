@@ -11,16 +11,14 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.cineclube.model.FilmeDB;
 import br.com.cineclube.model.WrapperMovieSearch;
+import br.com.cineclube.service.MoviedbService;
 
 @RestController
 @RequestMapping("/api/v1")
 public class MoviedbConsumer {
 	
-	@Value("${api.moviedb.key}")
-    private String apiKey;
-
-    @Autowired
-    private RestTemplate apiRequest;
+	@Autowired
+	MoviedbService apiService;
     
     /**
      * TESTE pela nossa API:
@@ -31,13 +29,8 @@ public class MoviedbConsumer {
      */
     @RequestMapping("/filmedb/{id}")
     public FilmeDB getFilmeById(@PathVariable Long id) {
-    	
-    	String filmeUrl = 
-        		"https://api.themoviedb.org/3/movie/" + id + "?api_key=" +  apiKey;
-    	
-        FilmeDB filme = apiRequest.getForObject(filmeUrl, FilmeDB.class);
-        
-        return filme; // serializado em JSON
+   
+        return apiService.getMovieById(id);
     }
     
     /**
@@ -52,30 +45,15 @@ public class MoviedbConsumer {
     @GetMapping("/search")
     public WrapperMovieSearch searchMovie(@RequestParam String title, @RequestParam Integer year){
     	
-    	String filmeUrl = 
-        		"https://api.themoviedb.org/3/search/movie?api_key=" +  apiKey + "&query=" + title + "&year=" + year;
-    	
-    	// aonde ocorre a des-serializacao (converter o retorno em json para objeto java)
-    	WrapperMovieSearch searchResult = apiRequest.getForObject(filmeUrl, WrapperMovieSearch.class);
-    	
-    	return searchResult;
+    	return apiService.searchMovie(title, year);
     }
     
     /*
      * retorna somente o primeiro filme da lista
      */
     @GetMapping("/search1")
-    public FilmeDB searchOneMovie(@RequestParam String title, @RequestParam Integer year){
+    public FilmeDB searchOneMovie(@RequestParam String title, @RequestParam Integer year){    	
     	
-    	String filmeUrl = 
-        		"https://api.themoviedb.org/3/search/movie?api_key=" +  apiKey + "&language=pt-BR&query=" + title + "&year=" + year;
-    	
-    	
-    	WrapperMovieSearch searchResult = apiRequest.getForObject(filmeUrl, WrapperMovieSearch.class);
-    	FilmeDB filme = searchResult.getResults().get(0);
-    	
-    	return filme;
-    }
-    
-    
+    	return apiService.searchOneMovie(title, year);
+    } 
 }

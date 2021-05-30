@@ -16,6 +16,7 @@ import br.com.cineclube.dao.PessoaRepository;
 import br.com.cineclube.model.Pessoa;
 import br.com.cineclube.model.PersonDB;
 import br.com.cineclube.model.WrapperPersonSearch;
+import br.com.cineclube.service.PersondbService;
 
 @Controller
 @RequestMapping("/pessoas")
@@ -26,6 +27,9 @@ public class PessoaController {
 	
 	@Value("${api.moviedb.key}")
     private String apiKey;
+	
+	@Autowired
+	PersondbService apiService;
 
     @Autowired
     private RestTemplate apiRequest;
@@ -47,17 +51,12 @@ public class PessoaController {
 		Pessoa pessoa = dao.findById(id).get();
 		model.addAttribute("pessoa", pessoa);
 		
-		String pessoaUrl = 
-        		"https://api.themoviedb.org/3/search/person?api_key=" +  apiKey + "&query=" + pessoa.getNome();
+		PersonDB personDB = apiService.searchOneMovie(
+				pessoa.getNome());
+		pessoa.setPersondb(personDB);    		
     	
-    	WrapperPersonSearch searchResult = apiRequest.getForObject(pessoaUrl, WrapperPersonSearch.class);
-    	
-    	if(searchResult.getResults().size() > 0) {
-    		PersonDB personDB = searchResult.getResults().get(0);
-    		pessoa.setPersondb(personDB);    		
-    	}
-		
-		return "pessoa/manterPessoa.html";	}
+		return "pessoa/manterPessoa.html";	
+	}
 	
 	@PostMapping("/save")
 	public String save(@Valid Pessoa pessoa, BindingResult result, Model model) {

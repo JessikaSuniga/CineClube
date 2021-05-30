@@ -19,6 +19,7 @@ import br.com.cineclube.dao.FilmeRepository;
 import br.com.cineclube.model.Filme;
 import br.com.cineclube.model.FilmeDB;
 import br.com.cineclube.model.WrapperMovieSearch;
+import br.com.cineclube.service.MoviedbService;
 
 @Controller
 @RequestMapping("/filmes")
@@ -29,6 +30,9 @@ public class FilmeController {
 	
 	@Value("${api.moviedb.key}")
     private String apiKey;
+	
+	@Autowired
+	MoviedbService apiService;
 
     @Autowired
     private RestTemplate apiRequest;
@@ -61,16 +65,11 @@ public class FilmeController {
 		Filme filme = dao.getOne(id);
 		model.addAttribute("filme", filme);
 		
-		String filmeUrl = 
-				"https://api.themoviedb.org/3/search/movie?api_key=" +  apiKey + 
-				"&language=pt-BR&query=" + filme.getNome() + "&year=" + filme.getLancamento().getYear();
-				
-		WrapperMovieSearch searchResult = apiRequest.getForObject(filmeUrl, WrapperMovieSearch.class);    	
-		
-		if(searchResult.getResults().size() > 0) {
-			FilmeDB moviedb = searchResult.getResults().get(0);    	
-			filme.setMoviedb(moviedb);			
-		}
+		FilmeDB moviedb = apiService.searchOneMovie(
+				filme.getNome(), 
+				filme.getLancamento().getYear()
+		);
+		filme.setMoviedb(moviedb);
 		
 		return "filme/manterFilme.html";
 	}
