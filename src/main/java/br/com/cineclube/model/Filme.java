@@ -21,6 +21,7 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import br.com.cineclube.tmdb.model.MovieTMDB;
 
 
 @Entity
@@ -31,7 +32,7 @@ public class Filme {
 	private Long id;
 
 	@Transient
-	private FilmeDB moviedb; // mapea o json que vem da moviedb api
+	private MovieTMDB moviedb; // mapea o json que vem da moviedb api
 	
 	@NotBlank(message="Nome campo obrigatorio")
 	@Size(min=1, max=50, message="Minimo de {min} caracteres e maximo de {max}")
@@ -115,11 +116,11 @@ public class Filme {
 		this.categoria = categoria;
 	}
 
-	public FilmeDB getMoviedb() {
+	public MovieTMDB getMoviedb() {
 		return moviedb;
 	}
 
-	public void setMoviedb(FilmeDB moviedb) {
+	public void setMoviedb(MovieTMDB moviedb) {
 		this.moviedb = moviedb;
 	}
 	

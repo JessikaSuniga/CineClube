@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import br.com.cineclube.model.Categoria;
-import br.com.cineclube.model.Pessoa;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
 

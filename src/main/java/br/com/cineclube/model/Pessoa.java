@@ -21,6 +21,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import br.com.cineclube.tmdb.model.PersonTMDB;
+
 @Entity
 public class Pessoa {
 	
@@ -35,7 +37,7 @@ public class Pessoa {
 	private String nome;
 	
 	@Transient
-	private PersonDB persondb;
+	private PersonTMDB persondb;
 	
 	@ManyToMany
 	@JsonSerialize(using = FilmeListSerializer.class)
@@ -71,11 +73,11 @@ public class Pessoa {
 		this.id = id;
 	}
 	
-	public PersonDB getPersondb() {
+	public PersonTMDB getPersondb() {
 		return persondb;
 	}
 
-	public void setPersondb(PersonDB persondb) {
+	public void setPersondb(PersonTMDB persondb) {
 		this.persondb = persondb;
 	}
 

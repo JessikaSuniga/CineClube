@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
 
 import br.com.cineclube.dao.PessoaRepository;
 import br.com.cineclube.model.Pessoa;
-import br.com.cineclube.model.PersonDB;
-import br.com.cineclube.model.WrapperPersonSearch;
-import br.com.cineclube.service.PersondbService;
+import br.com.cineclube.tmdb.model.PersonTMDB;
+import br.com.cineclube.tmdb.service.PersondbService;
 
 @Controller
 @RequestMapping("/pessoas")
@@ -30,9 +28,6 @@ public class PessoaController {
 	
 	@Autowired
 	PersondbService apiService;
-
-    @Autowired
-    private RestTemplate apiRequest;
     
 	@GetMapping("/list")
 	public String list(Model model) {
@@ -51,9 +46,11 @@ public class PessoaController {
 		Pessoa pessoa = dao.findById(id).get();
 		model.addAttribute("pessoa", pessoa);
 		
-		PersonDB personDB = apiService.searchOneMovie(
-				pessoa.getNome());
-		pessoa.setPersondb(personDB);    		
+		PersonTMDB personDB = apiService.searchOneMovie(pessoa.getNome());
+		
+		if(personDB.getId() != null) {
+			pessoa.setPersondb(personDB);    					
+		}
     	
 		return "pessoa/manterPessoa.html";	
 	}

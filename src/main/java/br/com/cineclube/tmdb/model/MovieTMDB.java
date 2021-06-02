@@ -1,7 +1,7 @@
-package br.com.cineclube.model;
+package br.com.cineclube.tmdb.model;
 
 // classe que espelha o retorno da requisicao a api themoviedb
-public class FilmeDB {
+public class MovieTMDB {
 
 	private Long id;
 	private String title;
@@ -9,6 +9,9 @@ public class FilmeDB {
 	private Integer vote_count;
 	private Float vote_average;
 	
+	// /6EiRUJpuoeQPghrs3YNktfnqOVh.jpg
+	// https://image.tmdb.org/t/p/w500/<POSTER_PATH>
+	// https://image.tmdb.org/t/p/w500/6EiRUJpuoeQPghrs3YNktfnqOVh.jpg
 	private String poster_path;
 	
 	
@@ -17,7 +20,7 @@ public class FilmeDB {
 	
 	
 	public String getPoster_path() {
-		return "https://image.tmdb.org/t/p/w200"+poster_path;
+		return "https://image.tmdb.org/t/p/w500"+poster_path;
 	}
 	public void setPoster_path(String poster_path) {
 		this.poster_path = poster_path;
@@ -52,4 +55,6 @@ public class FilmeDB {
 	public void setVote_average(Float vote_average) {
 		this.vote_average = vote_average;
 	}
+	
+	
 }

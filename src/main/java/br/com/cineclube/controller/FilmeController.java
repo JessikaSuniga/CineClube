@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
 
 import br.com.cineclube.dao.FilmeRepository;
 import br.com.cineclube.model.Filme;
-import br.com.cineclube.model.FilmeDB;
-import br.com.cineclube.model.WrapperMovieSearch;
-import br.com.cineclube.service.MoviedbService;
+import br.com.cineclube.tmdb.model.MovieTMDB;
+import br.com.cineclube.tmdb.service.MoviedbService;
 
 @Controller
 @RequestMapping("/filmes")
@@ -33,9 +31,6 @@ public class FilmeController {
 	
 	@Autowired
 	MoviedbService apiService;
-
-    @Autowired
-    private RestTemplate apiRequest;
 	
 	@RequestMapping("/list")
 	public String list(Model model) {
@@ -65,11 +60,14 @@ public class FilmeController {
 		Filme filme = dao.getOne(id);
 		model.addAttribute("filme", filme);
 		
-		FilmeDB moviedb = apiService.searchOneMovie(
+		MovieTMDB moviedb = apiService.searchOneMovie(
 				filme.getNome(), 
 				filme.getLancamento().getYear()
 		);
-		filme.setMoviedb(moviedb);
+		
+		if(moviedb.getId() != null) {
+			filme.setMoviedb(moviedb);			
+		}
 		
 		return "filme/manterFilme.html";
 	}
