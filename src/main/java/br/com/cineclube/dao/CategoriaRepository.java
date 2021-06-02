@@ -9,15 +9,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import br.com.cineclube.model.Categoria;
-import br.com.cineclube.model.Pessoa;
 
-public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
-	List<Categoria> findByNome(String nome);
-	List<Categoria> findByNomeIgnoreCaseContaining(String query);
-
+	Categoria findByNome(String nome);
+	
+	List<Categoria> findByNomeIgnoreCaseContaining(String nome);
+	
 	@Transactional
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("delete from Categoria c where c.id = ?1")
-	void removerCategoria(Long id);
+	@Query("delete from Categoria c where c.id = :id")
+	void remove(Long id);
 }

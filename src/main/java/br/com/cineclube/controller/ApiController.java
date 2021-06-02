@@ -35,8 +35,16 @@ public class ApiController {
 	FilmeRepository daof;
 	
 	@Autowired
-	CategoriaRepository daoc;
-
+	CategoriaRepository daoCat;
+	
+	@GetMapping("categorias")
+    public List<Categoria> getCategorias(@RequestParam(value = "q", required = false) String query) {
+        if (!StringUtils.hasLength(query)) {
+            return daoCat.findAll();
+        }
+        return daoCat.findByNomeIgnoreCaseContaining(query);
+    }
+			
 //	http://localhost:8080/api/elenco?q=ja
 	@GetMapping("/elenco")
 	public List<Pessoa> pessoasElenco(@RequestParam(value = "q", required = false) String query) {
@@ -45,72 +53,25 @@ public class ApiController {
 		}
 		return dao.findByNomeIgnoreCaseContaining(query);
 	}
-
-	@GetMapping("/categoria")
-	public List<Categoria> categoriasFilme(@RequestParam(value = "q", required = false) String query) {
-	   if (!StringUtils.hasLength(query)) {
-	       return daoc.findAll();
-	   }
-	   return daoc.findByNomeIgnoreCaseContaining(query);
-	}
-	
-	//region API FILME 
-	
-	/**
-	 * Exemple route
-	 * http://localhost:8080/api/
-	 */
-	
-	// Get by id
-	@GetMapping("/filme/{id}")
-	Optional<Filme> getFilmes(@PathVariable Long id) { 
-		return daof.findById(id);
-	}
-	
-	// Get all
+	/* 
+	 * API FILME 
+	 * 
+	 * */
+	// Get ALL
+	// `http :8080/api/filmes`
 	@GetMapping(value = "/filmes") 
 	Iterable<Filme> getFilmes() { 
 		return daof.findAll();
 	}
 	
-	// Get all categoria
-	@GetMapping(value = "/filmes/{categoriaId}") 
-	Iterable<Filme> getFilmesByCategoriaId(@PathVariable Long categoriaId) { 
-		return daof.selecionatFilmePorCategoria(categoriaId);
-	}
-	
-	// CREATE
-	@PostMapping("/filme")
-	Filme postFilme(@RequestBody Filme filme) {
-		daof.save(filme);
-		return filme;
-	}
-		
-	// UPDATE
-	@PutMapping("/filme/{id}")
-	ResponseEntity<Filme> putFilme(@PathVariable Long id, @RequestBody Filme filme) {
-		Filme p = daof.save(filme);
-		if(p!=null)
-			return new ResponseEntity<>(filme, HttpStatus.CREATED);
-		
-		return new ResponseEntity<>(filme, HttpStatus.OK);
-	}
-	
-	// DELETE
-	@DeleteMapping("/filme/{id}")
-	void deleteFilme(@PathVariable Long id) {
-		daof.removerFilme(id);
-	}
-	//-------------------------------------------------------------------------------------------------------
-	//endregion
-	
-	//region API PESSOA 
-
-	/* READ
-	 * `http :8080/api/pessoa/1`
-	 * `http GET :8080/api/pessoa/1`
-	 *  optional trata NPE
-	 */
+	/* 
+	 * API PESSOA 
+	 * 
+	 * */
+	// READ
+	// `http :8080/api/pessoa/1`
+	// `http GET :8080/api/pessoa/1`
+	// optional trata NPE
 	@GetMapping("/pessoa/{id}")
 	Optional<Pessoa> getPessoa(@PathVariable Long id) { 
 		return dao.findById(id);

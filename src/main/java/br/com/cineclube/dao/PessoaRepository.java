@@ -19,8 +19,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	
 	@Transactional
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("delete from Pessoa p where p.id = ?1")
+	@Query("delete from Pessoa p where p.id = :id")
 	void removerPessoa(Long id);
-	
-	
 }

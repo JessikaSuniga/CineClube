@@ -1,7 +1,8 @@
 package br.com.cineclube.model;
 
-
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
@@ -22,6 +24,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import br.com.cineclube.tmdb.model.GenreTMDB;
+import br.com.cineclube.tmdb.model.MovieTMDB;
+
 
 @Entity
 public class Filme {
@@ -29,12 +34,23 @@ public class Filme {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Transient
+	private MovieTMDB moviedb; // mapea o json que vem da moviedb api
 
 	@Transient
-	private FilmeDB moviedb; // mapea o json que vem da moviedb api
-	
+	private List<GenreTMDB> listGenredb; // mapea o json que vem da moviedb api
+
+	public List<GenreTMDB> getListGenredb() {
+		return listGenredb;
+	}
+
+	public void setListGenredb(List<GenreTMDB> listGenredb) {
+		this.listGenredb = listGenredb;
+	}
+
 	@NotBlank(message="Nome campo obrigatorio")
-	@Size(min=1, max=50, message="Minimo de {min} caracteres e maximo de {max}")
+	@Size(min=1, max=50, message="Minimo de {min} caracteres em maximo de {max}")
 	@Column(nullable = false)
 	private String nome;
 	
@@ -42,6 +58,15 @@ public class Filme {
 	@Past
 	@DateTimeFormat(pattern="dd/MM/yyyy")
 	private LocalDate lancamento;
+	
+	@JsonSerialize(using = CategoriaSerializer.class)
+    @NotEmpty(message="deve selecionar no min 1 categoria")
+    @Size(min=1, max=3, message="qtd de categorias deve ser entre {min} e {max}")
+    @ManyToMany
+	@JoinTable(name="filme_categoria",
+		joinColumns = {@JoinColumn(name="filme_id")}, // owner
+		inverseJoinColumns = {@JoinColumn(name="categoria_id")}) // dependent
+    private Set<Categoria> categorias;
 	
 	private Float nota;
 	
@@ -51,20 +76,26 @@ public class Filme {
 	joinColumns = {@JoinColumn(name="filme_id")},
 	inverseJoinColumns = {@JoinColumn(name="pessoa_id")})
 	private Set<Pessoa> pessoas;
-
-	@ManyToMany
-	@JoinTable(name = "filme_categoria",
-	joinColumns = {@JoinColumn(name="filme_id")},
-	inverseJoinColumns = {@JoinColumn(name="categoria_id")})
-	@Size(min=1, max=3, message="Minimo de {min} categoria e maximo de {max} categorias")
-	private Set<Categoria> categoria;
 	
 	public Filme() {}
 
-	public Filme(String nome, Float nota, LocalDate lancamento) {
+	public Filme(String nome, Float nota, LocalDate lancamento, Categoria categoria) {
 		this.nome = nome;
-		this.nota = nota;
 		this.lancamento = lancamento;
+		this.nota = nota;
+		if (categoria!=null) {
+			this.categorias = new HashSet<>();
+			this.categorias.add(categoria);
+		}
+	}
+	public Filme(String nome, Float nota, LocalDate lancamento, List<Categoria> categorias) {
+		this.nome = nome;
+		this.lancamento = lancamento;
+		this.nota = nota;
+		if (categorias!=null && categorias.size() > 0) {
+			this.categorias = new HashSet<>();
+			this.categorias.addAll(categorias);
+		}
 	}
 
 	public String getNome() {
@@ -73,6 +104,16 @@ public class Filme {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	
+
+	public Set<Categoria> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(Set<Categoria> categorias) {
+		this.categorias = categorias;
 	}
 
 	public Float getNota() {
@@ -107,20 +148,12 @@ public class Filme {
 		this.pessoas = pessoas;
 	}
 
-	public Set<Categoria> getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Set<Categoria> categoria) {
-		this.categoria = categoria;
-	}
-
-	public FilmeDB getMoviedb() {
+	public MovieTMDB getMoviedb() {
 		return moviedb;
 	}
 
-	public void setMoviedb(FilmeDB moviedb) {
+	public void setMoviedb(MovieTMDB moviedb) {
 		this.moviedb = moviedb;
 	}
-	
+
 }

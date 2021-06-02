@@ -8,32 +8,39 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 public class Categoria {
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
-	@JsonProperty("text")
-	@Size(min=2, max=20, message="Mínimo de {min} caracteres e máximo de {max}")
+	@NotBlank
+	@Size(min=2, max=25)
+	@Column(unique = true)
 	private String nome;
 	
-	@JsonIgnore
-	@ManyToMany(mappedBy = "categoria")
+	@JsonSerialize(using = FilmeSerializer.class)
+	@ManyToMany(mappedBy="categorias")
 	private Set<Filme> filmes;
-	
 	
 	public Categoria() {}
 	
-	public Categoria(String nome) {
-		this.nome = nome;
+	public Categoria(String _nome) {
+		this.nome = _nome;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -43,19 +50,32 @@ public class Categoria {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public Long getId() {
-		return id;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		return result;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Categoria other = (Categoria) obj;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		return true;
 	}
-
 	public Set<Filme> getFilmes() {
 		return filmes;
 	}
-
 	public void setFilmes(Set<Filme> filmes) {
 		this.filmes = filmes;
 	}

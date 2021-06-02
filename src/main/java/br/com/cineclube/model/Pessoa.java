@@ -3,13 +3,12 @@ package br.com.cineclube.model;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
@@ -19,7 +18,9 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.com.cineclube.tmdb.model.PersonTMDB;
 
 @Entity
 public class Pessoa {
@@ -31,27 +32,19 @@ public class Pessoa {
 	@NotBlank
 	@Size(min=3, max=50, message="Nome deve conter ao menos {min} caracteres")
 	@Column(nullable = false)
-//	@JsonProperty("text") // usado no momento em que faz a serializacao para integrar com o select2
 	private String nome;
-	
-	@Transient
-	private PersonDB persondb;
-	
-	@ManyToMany
-	@JsonSerialize(using = FilmeListSerializer.class)
-	@JoinTable(name="pessoa_filme",
-	joinColumns = {@JoinColumn(name="filme_id")},
-	inverseJoinColumns = {@JoinColumn(name="pessoa_id")})
-	private Set<Filme> filmes;
 	
 	@Past
 	@DateTimeFormat(pattern="dd/MM/yyyy")
 	@NotNull
 	private LocalDate dataNasc;
 	
-	/*@JsonIgnore
+	@Transient
+	private PersonTMDB persondb;
+	
+	@JsonIgnore
 	@ManyToMany(mappedBy="pessoas")
-	private Set<Filme> filmes;*/
+	private Set<Filme> filmes;
 	
 	@Transient
 	private Integer age;
@@ -69,14 +62,6 @@ public class Pessoa {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	public PersonDB getPersondb() {
-		return persondb;
-	}
-
-	public void setPersondb(PersonDB persondb) {
-		this.persondb = persondb;
 	}
 
 	public String getNome() {
@@ -141,6 +126,14 @@ public class Pessoa {
 		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
+	}
+
+	public PersonTMDB getPersondb() {
+		return persondb;
+	}
+
+	public void setPersondb(PersonTMDB persondb) {
+		this.persondb = persondb;
 	}
 	
 }
