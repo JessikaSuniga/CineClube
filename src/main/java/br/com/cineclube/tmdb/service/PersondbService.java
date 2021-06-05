@@ -14,19 +14,19 @@ import br.com.cineclube.tmdb.model.WrapperPersonSearch;
 
 @Service
 public class PersondbService {
-	
+
 	@Value("${api.moviedb.key}")
 	private String apiKey;
 
 	@Autowired
 	private RestTemplate apiRequest;
-	
+
 	public PersonTMDB getById(Long id) {
 		String filmeUrl = "https://api.themoviedb.org/3/person/" + id + "?api_key=" + apiKey;
 		PersonTMDB ator = apiRequest.getForObject(filmeUrl, PersonTMDB.class);
 		return ator;
 	}
-	
+
 	public Optional<PersonTMDB> searchByName(String name) {
 		Map<String, String> params = new HashMap<>();
 		params.put("key", apiKey);
@@ -34,9 +34,9 @@ public class PersondbService {
 		params.put("lang", "pt-BR");
 		String url = "https://api.themoviedb.org/3/search/person?api_key={key}&language={lang}&query={query}";
 		WrapperPersonSearch search = apiRequest.getForObject(url, WrapperPersonSearch.class, params);
-		
+
 		PersonTMDB ator = null;
-		if (search.getResults()!=null && search.getResults().size()>0)
+		if (search.getResults() != null && search.getResults().size() > 0)
 			ator = search.getResults().get(0);
 		return Optional.ofNullable(ator);
 	}

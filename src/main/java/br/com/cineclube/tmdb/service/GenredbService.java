@@ -9,21 +9,20 @@ import br.com.cineclube.tmdb.model.WrapperGenreSearch;
 
 @Service // acessada via autowired (uso interno das nossas classes)
 public class GenredbService {
-	
+
 	@Value("${api.moviedb.key}")
-    private String apiKey;
+	private String apiKey;
 
-    @Autowired
-    private RestTemplate apiRequest;
-    
-	public WrapperGenreSearch searchAllGenre(){
-    	
-    	String genreUrl = "https://api.themoviedb.org/3/genre/movie/list?api_key=" +  apiKey + "&language=pt-BR";
+	@Autowired
+	private RestTemplate apiRequest;
 
-    	WrapperGenreSearch searchResult = 
-    			apiRequest.getForObject(genreUrl, WrapperGenreSearch.class);
-    	
-    	return searchResult;
-    }
+	public WrapperGenreSearch searchAllGenres() {
+
+		String genreUrl = "https://api.themoviedb.org/3/genre/movie/list?api_key=" + apiKey + "&language=pt-BR";
+
+		WrapperGenreSearch searchResult = apiRequest.getForObject(genreUrl, WrapperGenreSearch.class);
+
+		return searchResult;
+	}
 
 }

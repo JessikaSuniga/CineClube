@@ -17,10 +17,7 @@ import br.com.cineclube.dao.CategoriaRepository;
 import br.com.cineclube.dao.FilmeRepository;
 import br.com.cineclube.model.Categoria;
 import br.com.cineclube.model.Filme;
-import br.com.cineclube.tmdb.model.GenreTMDB;
 import br.com.cineclube.tmdb.model.MovieTMDB;
-import br.com.cineclube.tmdb.model.WrapperGenreSearch;
-import br.com.cineclube.tmdb.service.GenredbService;
 import br.com.cineclube.tmdb.service.MoviedbService;
 
 @Controller
@@ -35,9 +32,6 @@ public class FilmeController {
 	
 	@Autowired
 	MoviedbService apiService;
-	
-	@Autowired
-	GenredbService apiGenreService;
 
 	@GetMapping("/new")
 	public String newForm(Model model) {
@@ -61,9 +55,6 @@ public class FilmeController {
 				filme.getLancamento().getYear()
 		);
 		filme.setMoviedb(moviedb);
-		
-		WrapperGenreSearch genredb = apiGenreService.searchAllGenre();
-		filme.setListGenredb(genredb.getResults());
 	
 		return "filme/manterFilme.html";
 	}
